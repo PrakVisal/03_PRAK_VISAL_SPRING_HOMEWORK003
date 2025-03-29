@@ -1,5 +1,6 @@
 package com.example.eventticketing.service.impl;
 
+import com.example.eventticketing.exception.NotFoundException;
 import com.example.eventticketing.model.entity.Events;
 import com.example.eventticketing.model.dto.request.EventsRequest;
 import com.example.eventticketing.model.entity.Venues;
@@ -32,6 +33,9 @@ public class EventsServiceImpl implements EventsService {
     @Override
     public Events updateEvent(Integer id, EventsRequest eventsRequest) {
         Events events = eventsRepository.updateEvent(id,eventsRequest);
+        if(events == null){
+            throw new NotFoundException("Event ID "+id+" is not found!!!");
+        }
         attendeesRepository.deleteEventAttendeeTable(events.getId());
         for(Integer attendeeId : eventsRequest.getAttendeeId()){
             attendeesRepository.insertEventIdAndAttendeeId(events.getId(),attendeeId);
@@ -41,11 +45,19 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     public Events deleteEvent(Integer id) {
-        return eventsRepository.deleteEvent(id);
+        Events events = eventsRepository.deleteEvent(id);
+        if(events == null){
+            throw new NotFoundException("Event ID "+id+" is not found!!!");
+        }
+        return events;
     }
 
     @Override
     public Events getEventById(Integer id) {
-        return eventsRepository.getEventById(id);
+        Events events = eventsRepository.getEventById(id);
+        if(events == null){
+            throw new NotFoundException("Event ID "+id+" is not found!!!");
+        }
+        return events;
     }
 }

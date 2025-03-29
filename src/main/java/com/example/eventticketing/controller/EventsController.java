@@ -1,11 +1,14 @@
 package com.example.eventticketing.controller;
 
+import com.example.eventticketing.exception.NotFoundException;
 import com.example.eventticketing.model.dto.response.ApiResponse;
 import com.example.eventticketing.model.entity.Events;
 import com.example.eventticketing.model.dto.request.EventsRequest;
 import com.example.eventticketing.model.entity.Venues;
 import com.example.eventticketing.service.EventsService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,7 @@ public class EventsController {
     private final EventsService eventsService;
     @Operation(summary = "Get all Events")
     @GetMapping
-    ResponseEntity<ApiResponse<List<Events>>> getAllEvents(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize){
+    ResponseEntity<ApiResponse<List<Events>>> getAllEvents(@Positive @RequestParam(defaultValue = "1") Integer page, @Positive @RequestParam(defaultValue = "10") Integer pageSize){
         ApiResponse<List<Events>> response = ApiResponse.<List<Events>>builder()
                 .success(true)
                 .message("Get all Events Successfully")
@@ -34,7 +37,7 @@ public class EventsController {
 
     @Operation(summary = "Add new Event")
     @PostMapping
-    ResponseEntity<ApiResponse<Events>> addEvent(@RequestBody EventsRequest eventsRequest){
+    ResponseEntity<ApiResponse<Events>> addEvent(@Valid @RequestBody EventsRequest eventsRequest){
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Get all Events Successfully")
@@ -47,7 +50,7 @@ public class EventsController {
 
     @Operation(summary = "Update Event")
     @PutMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> updateEvent(@PathVariable Integer id, @RequestBody EventsRequest eventsRequest){
+    ResponseEntity<ApiResponse<Events>> updateEvent(@Positive @PathVariable Integer id, @Valid @RequestBody EventsRequest eventsRequest){
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Updated Event Successfully")
@@ -60,7 +63,7 @@ public class EventsController {
 
     @Operation(summary = "Delete Event")
     @DeleteMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> deleteEvent(@PathVariable Integer id){
+    ResponseEntity<ApiResponse<Events>> deleteEvent(@Positive @PathVariable Integer id){
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Deleted Event Successfully")
@@ -73,7 +76,7 @@ public class EventsController {
 
     @Operation(summary = "Get Event By ID")
     @GetMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> getEventById(@PathVariable Integer id){
+    ResponseEntity<ApiResponse<Events>> getEventById(@Positive @PathVariable Integer id){
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Get Event by Id Successfully")
@@ -81,6 +84,8 @@ public class EventsController {
                 .payload(eventsService.getEventById(id))
                 .timestamp(LocalDateTime.now())
                 .build();
+
+
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

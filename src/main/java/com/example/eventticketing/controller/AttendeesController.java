@@ -5,6 +5,9 @@ import com.example.eventticketing.model.dto.response.ApiResponse;
 import com.example.eventticketing.model.entity.Attendees;
 import com.example.eventticketing.service.AttendeesService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,7 @@ public class AttendeesController {
 
     @Operation(summary = "Get all Attendees")
     @GetMapping
-    ResponseEntity<ApiResponse<List<Attendees>>> getAllAttendees(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
+    ResponseEntity<ApiResponse<List<Attendees>>> getAllAttendees(@Positive @RequestParam(defaultValue = "1") Integer page,@Positive @RequestParam(defaultValue = "10") Integer pageSize) {
         ApiResponse<List<Attendees>> response = ApiResponse.<List<Attendees>>builder()
                 .success(true)
                 .message("Get all Attendees Successfully")
@@ -34,7 +37,7 @@ public class AttendeesController {
 
     @Operation(summary = "Add new Attendee")
     @PostMapping
-    ResponseEntity<ApiResponse<Attendees>> addAttendee(@RequestBody AttendeesRequest attendeesRequest) {
+    ResponseEntity<ApiResponse<Attendees>> addAttendee(@Valid @RequestBody AttendeesRequest attendeesRequest) {
         ApiResponse<Attendees> response = ApiResponse.<Attendees>builder()
                 .success(true)
                 .message("Add Attendee Successfully")
@@ -47,7 +50,7 @@ public class AttendeesController {
 
     @Operation(summary = "Update Attendee")
     @PutMapping("/{id}")
-    ResponseEntity<ApiResponse<Attendees>> updateAttendee(@PathVariable Integer id, @RequestBody AttendeesRequest attendeesRequest) {
+    ResponseEntity<ApiResponse<Attendees>> updateAttendee(@PathVariable @Positive Integer id ,@Valid @RequestBody AttendeesRequest attendeesRequest) {
         ApiResponse<Attendees> response = ApiResponse.<Attendees>builder()
                 .success(true)
                 .message("Updated Attendee Successfully")
@@ -60,7 +63,7 @@ public class AttendeesController {
 
     @Operation(summary = "Delete Attendee")
     @DeleteMapping("/{id}")
-    ResponseEntity<ApiResponse<Attendees>> deleteAttendee(@PathVariable Integer id) {
+    ResponseEntity<ApiResponse<Attendees>> deleteAttendee(@Positive @PathVariable Integer id) {
         ApiResponse<Attendees> response = ApiResponse.<Attendees>builder()
                 .success(true)
                 .message("Deleted Attendee Successfully")
@@ -73,7 +76,7 @@ public class AttendeesController {
 
     @Operation(summary = "Get Attendee By ID")
     @GetMapping("/{id}")
-    ResponseEntity<ApiResponse<Attendees>> updateAttendee(@PathVariable Integer id) {
+    ResponseEntity<ApiResponse<Attendees>> updateAttendee(@Positive @PathVariable Integer id) {
         ApiResponse<Attendees> response = ApiResponse.<Attendees>builder()
                 .success(true)
                 .message("Get Attendee By ID Successfully")

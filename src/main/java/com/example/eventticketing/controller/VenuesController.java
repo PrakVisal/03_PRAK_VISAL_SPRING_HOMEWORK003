@@ -5,6 +5,8 @@ import com.example.eventticketing.model.dto.response.ApiResponse;
 import com.example.eventticketing.model.entity.Venues;
 import com.example.eventticketing.service.VenuesService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class VenuesController {
 
     @Operation(summary = "Get all Venues")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Venues>>> getAllVenues(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<ApiResponse<List<Venues>>> getAllVenues(@Positive @RequestParam(defaultValue = "1") Integer page,@Positive @RequestParam(defaultValue = "10") Integer pageSize) {
         ApiResponse<List<Venues>> response = ApiResponse.<List<Venues>>builder()
                 .success(true)
                 .message("Get All Venues Successfully")
@@ -35,7 +37,7 @@ public class VenuesController {
 
     @Operation(summary = "Get Venue by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Venues>> getVenueById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Venues>> getVenueById(@Positive @PathVariable Integer id) {
         ApiResponse<Venues> response = ApiResponse.<Venues>builder()
                 .success(true)
                 .message("Get Venue By ID Successfully")
@@ -48,7 +50,7 @@ public class VenuesController {
 
     @Operation(summary = "Add new Venue")
     @PostMapping
-    public ResponseEntity<ApiResponse<Venues>> addVenue(@RequestBody VenuesRequest venuesRequest) {
+    public ResponseEntity<ApiResponse<Venues>> addVenue(@Valid @RequestBody VenuesRequest venuesRequest) {
         ApiResponse<Venues> response = ApiResponse.<Venues>builder()
                 .success(true)
                 .message("Add new Venue Successfully")
@@ -62,7 +64,7 @@ public class VenuesController {
 
     @Operation(summary = "Update Venue")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Venues>> updateVenue(@PathVariable Integer id, @RequestBody VenuesRequest venuesRequest) {
+    public ResponseEntity<ApiResponse<Venues>> updateVenue(@Positive @PathVariable Integer id,@Valid @RequestBody VenuesRequest venuesRequest) {
         ApiResponse<Venues> response = ApiResponse.<Venues>builder()
                 .success(true)
                 .message("Updated Venue Successfully")
@@ -76,7 +78,7 @@ public class VenuesController {
 
     @Operation(summary = "Delete Venue")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Venues>> deleteVenue(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Venues>> deleteVenue(@Positive @PathVariable Integer id) {
         ApiResponse<Venues> response = ApiResponse.<Venues>builder()
                 .success(true)
                 .message("Deleted Venue Successfully")

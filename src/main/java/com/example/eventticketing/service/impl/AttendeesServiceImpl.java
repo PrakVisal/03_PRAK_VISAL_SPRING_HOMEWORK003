@@ -1,11 +1,13 @@
 package com.example.eventticketing.service.impl;
 
+import com.example.eventticketing.exception.NotFoundException;
 import com.example.eventticketing.model.dto.request.AttendeesRequest;
 import com.example.eventticketing.model.entity.Attendees;
 import com.example.eventticketing.repository.AttendeesRepository;
 import com.example.eventticketing.service.AttendeesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.List;
 @Service
@@ -24,16 +26,29 @@ public class AttendeesServiceImpl implements AttendeesService {
 
     @Override
     public Attendees updateAttendee(Integer id, AttendeesRequest attendeesRequest) {
-        return attendeesRepository.updateAttendee(id,attendeesRequest);
+        Attendees attendees = attendeesRepository.updateAttendee(id,attendeesRequest);
+
+        if(attendees == null) {
+            throw new NotFoundException("Attendee ID " + id + " is not found!!!");
+        }
+        return attendees;
     }
 
     @Override
     public Attendees deleteAttendee(Integer id) {
-        return attendeesRepository.deleteAttendee(id);
+        Attendees attendees = attendeesRepository.deleteAttendee(id);
+        if(attendees == null){
+            throw new NotFoundException("Attendee ID "+id+" is not found!!!");
+        }
+        return attendees;
     }
 
     @Override
     public Attendees getAttendeeById(Integer id) {
-        return attendeesRepository.getAttendeeById(id);
+        Attendees attendees = attendeesRepository.getAttendeeById(id);
+        if(attendees == null){
+            throw new NotFoundException("Attendee ID "+id+" is not found!!!");
+        }
+        return attendees;
     }
 }
