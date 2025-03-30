@@ -23,16 +23,19 @@ public interface AttendeesRepository {
             """)
     @ResultMap("attendeeMapper")
     Attendees addAttendee(@Param("req") AttendeesRequest attendeesRequest);
+
     @Select("""
             UPDATE attendees SET attendee_name = #{req.attendeeName}, email = #{req.email} WHERE attendee_id = #{id} RETURNING *
             """)
     @ResultMap("attendeeMapper")
-    Attendees updateAttendee(Integer id,@Param("req") AttendeesRequest attendeesRequest);
+    Attendees updateAttendee(Integer id, @Param("req") AttendeesRequest attendeesRequest);
+
     @Select("""
             DELETE FROM attendees WHERE attendee_id = #{id} RETURNING *
             """)
     @ResultMap("attendeeMapper")
     Attendees deleteAttendee(Integer id);
+
     @Select("""
             SELECT * FROM attendees WHERE attendee_id = #{id}
             """)
@@ -48,10 +51,17 @@ public interface AttendeesRepository {
     @Insert("""
             INSERT INTO event_attendee (event_id, attendee_id) VALUES (#{eventId},#{attendeeId})
             """)
-    void insertEventIdAndAttendeeId(Integer eventId,Integer attendeeId);
+    void insertEventIdAndAttendeeId(Integer eventId, Integer attendeeId);
 
     @Delete("""
             DELETE FROM event_attendee WHERE event_id = #{id}
             """)
-    void deleteEventAttendeeTable (Integer id);
+    void deleteEventAttendeeTable(Integer id);
+
+    @Select("""
+            SELECT attendee_id FROM event_attendee WHERE event_id = #{eventId}
+            """)
+    @ResultMap("attendeeMapper")
+    List<Attendees> getAttendeeIdByEventId(Integer eventId);
+
 }

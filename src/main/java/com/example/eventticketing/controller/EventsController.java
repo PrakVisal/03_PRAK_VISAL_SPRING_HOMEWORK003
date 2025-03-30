@@ -22,48 +22,50 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EventsController {
     private final EventsService eventsService;
+
     @Operation(summary = "Get all Events")
     @GetMapping
-    ResponseEntity<ApiResponse<List<Events>>> getAllEvents(@Positive @RequestParam(defaultValue = "1") Integer page, @Positive @RequestParam(defaultValue = "10") Integer pageSize){
+    ResponseEntity<ApiResponse<List<Events>>> getAllEvents(@Positive @RequestParam(defaultValue = "1") Integer page, @Positive @RequestParam(defaultValue = "10") Integer pageSize) {
         ApiResponse<List<Events>> response = ApiResponse.<List<Events>>builder()
                 .success(true)
                 .message("Get all Events Successfully")
                 .status(HttpStatus.OK)
-                .payload(eventsService.getAllEvents(page,pageSize))
+                .payload(eventsService.getAllEvents(page, pageSize))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Add new Event")
     @PostMapping
-    ResponseEntity<ApiResponse<Events>> addEvent(@Valid @RequestBody EventsRequest eventsRequest){
+    ResponseEntity<ApiResponse<Events>> addEvent(@RequestBody @Valid EventsRequest eventsRequest) {
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
-                .message("Get all Events Successfully")
+                .message("Added new Event Successfully")
                 .status(HttpStatus.OK)
                 .payload(eventsService.addEvent(eventsRequest))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Update Event")
     @PutMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> updateEvent(@Positive @PathVariable Integer id, @Valid @RequestBody EventsRequest eventsRequest){
+    ResponseEntity<ApiResponse<Events>> updateEvent(@Positive @PathVariable Integer id, @Valid @RequestBody EventsRequest eventsRequest) {
+
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Updated Event Successfully")
                 .status(HttpStatus.OK)
-                .payload(eventsService.updateEvent(id,eventsRequest))
+                .payload(eventsService.updateEvent(id, eventsRequest))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Delete Event")
     @DeleteMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> deleteEvent(@Positive @PathVariable Integer id){
+    ResponseEntity<ApiResponse<Events>> deleteEvent(@Positive @PathVariable Integer id) {
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Deleted Event Successfully")
@@ -71,12 +73,12 @@ public class EventsController {
                 .payload(eventsService.deleteEvent(id))
                 .timestamp(LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Get Event By ID")
     @GetMapping("/{id}")
-    ResponseEntity<ApiResponse<Events>> getEventById(@Positive @PathVariable Integer id){
+    ResponseEntity<ApiResponse<Events>> getEventById(@Positive @PathVariable Integer id) {
         ApiResponse<Events> response = ApiResponse.<Events>builder()
                 .success(true)
                 .message("Get Event by Id Successfully")
@@ -86,6 +88,6 @@ public class EventsController {
                 .build();
 
 
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

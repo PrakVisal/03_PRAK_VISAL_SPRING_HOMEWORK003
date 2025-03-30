@@ -24,7 +24,7 @@ public class GlobalException {
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleUserNotFoundException(NotFoundException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-//        problemDetail.setTitle("User Not Found");
+        problemDetail.setTitle("User Not Found");
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
     }
@@ -72,5 +72,6 @@ public class GlobalException {
 
         return detail;
     }
+
 
 }
